@@ -35,3 +35,5 @@ mkdir -p ~/.config/nvim
 ```bash
 git clone https://github.com/hallstrom91/ssh_server_neovim.git ~/.config/nvim
 ```
+
+7. Open neovim with command `nvim` - all plugins etc will be installed
