@@ -121,4 +121,29 @@ return {
       })
     end,
   },
+  {
+    'nvim-treesitter/nvim-treesitter',
+    run = ':TSUpdate',
+    event = { 'BufReadPre', 'BufNewFile' },
+    config = function()
+      require('nvim-treesitter.configs').setup({
+        ensure_installed = {
+          'bash',
+          --  'vim',
+          -- 'lua',
+          --'markdown',
+          --'markdown_inline',
+          -- 'json',
+          --   'jsonc',
+        },
+        sync_install = false,
+        auto_install = false,
+        -- fold = { enable = false },
+        highlight = {
+          enable = true,
+          additional_vim_regex_highlighting = true,
+        },
+      })
+    end,
+  },
 }
