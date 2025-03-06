@@ -1,25 +1,87 @@
 return {
+
   {
     'neovim/nvim-lspconfig',
-    dependencies = {
-      'williamboman/mason.nvim',
-      'williamboman/mason-lspconfig.nvim',
-      'hrsh7th/cmp-nvim-lsp',
-    },
+    dependencies = { 'williamboman/mason-lspconfig.nvim', 'hrsh7th/cmp-nvim-lsp' },
     event = { 'BufReadPre', 'BufNewFile' },
     config = function()
-      require('mason').setup()
-      require('mason-lspconfig').setup({
-        ensure_installed = { 'bashls' },
+      local lspconfig = require('lspconfig')
+      local mason_lspconfig = require('mason-lspconfig')
+      local cmp_nvim_lsp = require('cmp_nvim_lsp')
+
+      local capabilities = cmp_nvim_lsp.default_capabilities()
+
+      -- local function on_attach(client, bufnr)
+      --   print(client.name .. " LSP started")
+      -- end
+
+      local lsp_flags = {
+        debounce_text_changes = 150,
+      }
+
+      local servers = {
+        bashls = {
+          filetypes = { 'sh', 'bash' },
+        },
+        -- yamlls = {
+        --   filetypes = { 'yaml', 'yml' },
+        -- },
+      }
+
+      mason_lspconfig.setup({
+        ensure_installed = vim.tbl_keys(servers), -- Installerar alla servrar i listan
       })
 
-      local lspconfig = require('lspconfig')
+      for server, config in pairs(servers) do
+        lspconfig[server].setup(vim.tbl_deep_extend('force', {
+          -- on_attach = on_attach,
+          capabilities = capabilities,
+          flags = lsp_flags,
+        }, config))
+      end
+    end,
+  },
 
-      lspconfig.bashls.setup({
-        capabilities = require('cmp_nvim_lsp').default_capabilities(),
+  {
+    'williamboman/mason.nvim',
+    build = ':MasonUpdate',
+    config = function()
+      local mason = require('mason')
+
+      mason.setup({
+        ui = {
+          icons = {
+            package_installed = ' ',
+            package_pending = ' ',
+            package_uninstalled = ' ',
+          },
+        },
       })
     end,
   },
+
+  {
+    'williamboman/mason-lspconfig.nvim',
+    dependencies = { 'williamboman/mason.nvim', 'neovim/nvim-lspconfig' },
+    config = function()
+      local mason_lspconfig = require('mason-lspconfig')
+
+      mason_lspconfig.setup({
+        --> Only LSP servers (auto-install)
+        ensure_installed = {
+          'bashls',
+          --'ts_ls',
+          --'lua_ls',
+          --'marksman',
+          --'vimls',
+          --'yamlls',
+          --'jsonls',
+        },
+        automatic_installation = true,
+      })
+    end,
+  },
+
   {
     'hrsh7th/nvim-cmp',
     event = 'InsertEnter',
