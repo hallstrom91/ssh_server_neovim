@@ -33,3 +33,10 @@ require("config.lazy")
 vim.filetype.add({
 	pattern = { [".*/%.bash/.*"] = "bash" },
 })
+
+vim.lsp.enable({
+	"lua_ls",
+	"bashls",
+	"yamlls",
+	"jsonls",
+})
