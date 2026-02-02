@@ -64,29 +64,22 @@ return {
 	--> Treesitter requires c-compiler on system to install lang parsers (not req; but nice)
 	--> requires 'tree-sitter-cli' from NPM and NodeJS + build-essential from APT.
 
-	{
-		"nvim-treesitter/nvim-treesitter",
-		branch = "main", -- latest
-		build = ":TSUpdate",
-		config = function()
-			local ts = require("nvim-treesitter")
-			-- install parsers
-			ts.install({
-				"bash",
-				"dockerfile",
-				"gitcommit",
-				"git_config",
-				"gitignore",
-				"git_rebase",
-				"javascript",
-				"json",
-				"regex", -- for cmdline hl
-				"tsx",
-				"typescript",
-				"yaml",
-			})
-		end,
-	},
+	-- {
+	-- 	"nvim-treesitter/nvim-treesitter",
+	-- 	branch = "main", -- latest
+	-- 	build = ":TSUpdate",
+	-- 	config = function()
+	-- 		local ts = require("nvim-treesitter")
+	-- 		-- install parsers
+	-- 		ts.install({
+	-- 			"bash",
+	-- 			"dockerfile",
+	-- 			"json",
+	-- 			"regex",
+	-- 			"yaml",
+	-- 		})
+	-- 	end,
+	-- },
 
 	{
 		"stevearc/oil.nvim",
